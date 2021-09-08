@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\News;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -42,12 +42,8 @@ class NewsController extends Controller
         {
             return response()->json(['error' => true, 'message' => 'Error'], 400);
         }
-        $news = NewsModel::where('id', $id);
-
-        if($news->value('userid') == 1)
-        {
-            return 'hello';
-        }
+        $news = NewsModel::where('id', $id)->first();
+        
         if( is_null($news) )
         {
             return response()->json(['error' => true, 'message' => 'Not found'], 404);
@@ -55,5 +51,16 @@ class NewsController extends Controller
 
         $news->update($request->all());
         return response()->json($news, 200);
+    }
+
+    public function newsDelete(Request $request, $id)
+    {
+        $news = NewsModel::where('id', $id)->first();
+        if( is_null($news) )
+        {
+            return response()->json(['error' => true, 'message' => 'Not found'], 404);
+        }
+        $news->delete();
+        return response()->json('ok', 204);
     }
 }

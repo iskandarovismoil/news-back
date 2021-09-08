@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('news', 'Api\News\NewsController@News');
+Route::get('news/{id}', 'Api\News\NewsController@NewsById');
+
+Route::post('news', 'Api\News\NewsController@NewsAdd');
+Route::put('news/{id}', 'Api\News\NewsController@NewsEdit');
+Route::delete('news/{id}', 'Api\News\NewsController@NewsDelete');

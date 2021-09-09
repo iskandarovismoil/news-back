@@ -17,6 +17,15 @@ class NewsController extends Controller
 
     public function newsAdd(Request $request)
     {   
+        try
+        {
+            $user = auth()->userOrFail();
+        }
+        catch(\Tymon\JWTAuth\Exceptions\UserNotDefinedException $e)
+        {
+            return response()->json(['error' => true, 'message' => $e->getMessage()], 401);
+        }
+
         $rules = [
             'title' => 'required|min:10|max:200',
             'description' => 'required|min:40',
@@ -33,6 +42,15 @@ class NewsController extends Controller
 
     public function newsEdit(Request $request, $id)
     {
+        try
+        {
+            $user = auth()->userOrFail();
+        }
+        catch(\Tymon\JWTAuth\Exceptions\UserNotDefinedException $e)
+        {
+            return response()->json(['error' => true, 'message' => $e->getMessage()], 401);
+        }
+
         $rules = [
             'title' => 'min:10|max:200',
             'description' => 'min:40',
@@ -55,6 +73,15 @@ class NewsController extends Controller
 
     public function newsDelete(Request $request, $id)
     {
+        try
+        {
+            $user = auth()->userOrFail();
+        }
+        catch(\Tymon\JWTAuth\Exceptions\UserNotDefinedException $e)
+        {
+            return response()->json(['error' => true, 'message' => $e->getMessage()], 401);
+        }
+
         $news = NewsModel::where('id', $id)->first();
         if( is_null($news) )
         {

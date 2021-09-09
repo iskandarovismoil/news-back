@@ -40,7 +40,7 @@ class NewsController extends Controller
         $validator = Validator::make($request->all(), $rules);
         if($validator->fails())
         {
-            return response()->json(['error' => true, 'message' => 'Error'], 400);
+            return response()->json(['error' => true, 'message' => $validator->messages()], 400);
         }
         $news = NewsModel::where('id', $id)->first();
         

@@ -24,6 +24,8 @@ Route::post('login', 'Api\Auth\AuthController@login');
 Route::get('news', 'Api\NewsController@News');
 Route::get('news/{id}', 'Api\NewsController@NewsById');
 
-Route::post('news', 'Api\NewsController@NewsAdd');
-Route::put('news/{id}', 'Api\NewsController@NewsEdit');
-Route::delete('news/{id}', 'Api\NewsController@NewsDelete');
+Route::group(['middleware' => ['jwt.verify']], function () {
+    Route::post('news/add', 'Api\NewsController@NewsAdd');
+    Route::put('news/{id}/edit', 'Api\NewsController@NewsEdit');
+    Route::delete('news/{id}/delete', 'Api\NewsController@NewsDelete');
+});

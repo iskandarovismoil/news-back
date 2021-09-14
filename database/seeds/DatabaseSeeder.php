@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\NewsModel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,7 +15,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
-        factory(NewsModel::class, 50)->create();
-        
+        for($i=1;$i<200;$i++){
+            DB::table('news')->insert(
+                [
+                    'userid' => 1,
+                    'title' => Str::random(10),
+                    'description' => Str::random(40),
+                    'likes' => 0,
+                ]
+            );
+        }
     }
+    
 }

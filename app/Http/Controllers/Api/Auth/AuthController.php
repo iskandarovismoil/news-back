@@ -24,12 +24,18 @@ class AuthController extends Controller
         $validator = Validator::make($input, $rules);
     
         if ($validator->fails()) {
-            return response()->json(['error' => true, 'message' => $validator->messages()], 400);
+            return response()->json(['success' => false, 'error' => $validator->messages()], 200);
         }
         $name = $request->name;
         $email = $request->email;
         $password = $request->password;
+        $repassword = $request->repassword;
+
+        if($password != $repassword)
+            return response()->json(['success' => false, 'error' => 'Пароли не совпадают !'], 200);
+
         $user = User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
+        return response()->json(['success' => true, 'error' => false], 200);
     }
 
     public function login(Request $request)
@@ -39,6 +45,13 @@ class AuthController extends Controller
         {
             return response()->json(['error' => true, 'message' => 'Incorrect login or password'], 401);
         }
-        return response()->json(['token' => $token], 200);
+        return response()->json(['token' => $token, 'user' => auth()->user()], 200);
     }
+
+    public function user($id)
+    {
+        return response()->json(User::where([['id', $id]])->first(), 200);
+    }
+
+    
 }

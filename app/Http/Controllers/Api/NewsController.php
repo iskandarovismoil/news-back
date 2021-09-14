@@ -15,7 +15,22 @@ class NewsController extends Controller
         return response()->json(NewsModel::get(), 200);
     }
 
-    public function newsAdd(Request $request)
+    public function news_by_id($id)
+    {
+        return response()->json(NewsModel::where([['id', $id]])->first(), 200);
+    }
+
+    public function news_by_userid($userid)
+    {
+        return response()->json(NewsModel::where([['userid', $userid]])->get(), 200);
+    }
+
+    public function news_my()
+    {
+        return response()->json(NewsModel::where([['userid', auth()->id()]])->get(), 200);
+    }
+
+    public function news_add(Request $request)
     {   
 
         try {
@@ -32,7 +47,7 @@ class NewsController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()) {
-            return response()->json(['success' => false, 'error' => $validator->messages()], 400);
+            return response()->json(['success' => false, 'error' => $validator->messages()], 200);
         }
 
         $news = NewsModel::create([
@@ -45,7 +60,7 @@ class NewsController extends Controller
         return response()->json(['success' => true, 'error' => false], 201);
     }
 
-    public function newsEdit(Request $request, $id)
+    public function news_edit(Request $request, $id)
     {
         try {
             $user = auth()->userOrFail();
@@ -78,18 +93,18 @@ class NewsController extends Controller
         return response()->json(['success' => true, 'error' => false], 200);
     }
 
-    public function newsDelete(Request $request, $id)
+    public function news_delete(Request $request, $id)
     {
         try {
             $user = auth()->userOrFail();
         } catch(\Tymon\JWTAuth\Exceptions\UserNotDefinedException $e) {
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 401);
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 200);
         }
 
         $news = NewsModel::where([['id', $id], ['userid', auth()->id()]])->first();
 
         if( is_null($news) ) {
-            return response()->json(['success' => false, 'error' => 'Not found'], 403);
+            return response()->json(['success' => false, 'error' => 'Not found'], 200);
         }
 
         $news->delete();

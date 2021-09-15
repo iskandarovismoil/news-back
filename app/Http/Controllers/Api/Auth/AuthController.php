@@ -49,8 +49,10 @@ class AuthController extends Controller
     }
 
     public function user($id)
-    {
-        return response()->json(User::where([['id', $id]])->first(), 200);
+    {   
+        $user = User::where([['id', $id]])->first();
+        
+        return response()->json(['data' => $user], 200);
     }
 
     

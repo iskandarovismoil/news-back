@@ -12,12 +12,25 @@ class NewsController extends Controller
 {   
     public function news()
     {
-        return response()->json(NewsModel::get(), 200);
+        $news_list = NewsModel::paginate(20);
+        return response()->json($news_list, 200);
     }
 
     public function news_by_id($id)
     {
-        return response()->json(NewsModel::where([['id', $id]])->first(), 200);
+        $news = NewsModel::where([['id', $id]])->first();
+        
+        if($news) {
+
+            if(auth()->id() == $news->userid)
+                $my = true;
+            else
+                $my = false;
+         
+        } else
+            $my = NULL;
+        
+        return response()->json(['data' => $news, 'my' => $my], 200);
     }
 
     public function news_by_userid($userid)

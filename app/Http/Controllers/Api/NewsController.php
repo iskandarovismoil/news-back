@@ -35,12 +35,13 @@ class NewsController extends Controller
 
     public function news_by_userid($userid)
     {
-        return response()->json(NewsModel::where([['userid', $userid]])->get(), 200);
+        
+        return response()->json(NewsModel::where([['userid', $userid]])->paginate(20), 200);
     }
 
     public function news_my()
     {
-        return response()->json(NewsModel::where([['userid', auth()->id()]])->get(), 200);
+        return response()->json(NewsModel::where([['userid', auth()->id()]])->paginate(20), 200);
     }
 
     public function news_add(Request $request)
@@ -89,13 +90,13 @@ class NewsController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()) {
-            return response()->json(['success' => false, 'error' => $validator->messages()], 400);
+            return response()->json(['success' => false, 'error' => $validator->messages()], 200);
         }
 
         $news = NewsModel::where([['id', $id], ['userid', auth()->id()]])->first();
         
         if( is_null($news) ) {
-            return response()->json(['success' => false, 'error' => 'Not found'], 403);
+            return response()->json(['success' => false, 'error' => 'Not found'], 200);
         }
         
         $news->update([

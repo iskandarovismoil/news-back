@@ -45,7 +45,7 @@ class AuthController extends Controller
         {
             return response()->json(['error' => true, 'message' => 'Incorrect login or password'], 401);
         }
-        return response()->json(['token' => $token, 'user' => auth()->user()], 200);
+        return response()->json(['token' => $token], 200);
     }
 
     public function user($id)

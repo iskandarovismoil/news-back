@@ -15,6 +15,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+        
+        // Не смог сделать нормальный Seeder :)
+
         for($i=1;$i<200;$i++){
             DB::table('news')->insert(
                 [

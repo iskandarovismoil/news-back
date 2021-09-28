@@ -50,7 +50,7 @@ class NewsController extends Controller
         try {
             $user = auth()->userOrFail();
         } catch(\Tymon\JWTAuth\Exceptions\UserNotDefinedException $e) {
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 401);
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 200);
         }
 
         $rules = [
@@ -79,7 +79,7 @@ class NewsController extends Controller
         try {
             $user = auth()->userOrFail();
         } catch(\Tymon\JWTAuth\Exceptions\UserNotDefinedException $e) {
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 401);
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 200);
         }
 
         $rules = [
